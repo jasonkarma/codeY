@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Add Food</h2>
+<form id="foodForm" method="post" action="/track_food">
+    <div class="form-group">
+        <label for="foodDescription">Food Description</label>
+        <input type="text" class="form-control" id="foodDescription" name="food_description" placeholder="e.g. One apple">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<div id="foodMessage" class="mt-3"></div>
+{% endblock %}

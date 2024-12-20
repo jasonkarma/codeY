@@ -1,0 +1,323 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <!-- Weight Goals Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-weight me-2"></i>Weight Goals</h5>
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#userInfoModal">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stat-card mb-3">
+                                <h6>Current Weight</h6>
+                                <h3 id="currentWeight">Not Set</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6>Target Weight</h6>
+                                <h3 id="targetWeight">Not Set</h3>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6>Daily Target</h6>
+                                <h3 id="caloriesTarget">2000</h3>
+                                <small class="text-muted">calories</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Logs Section -->
+    <div class="row">
+        <!-- Today's Workouts Card -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-dumbbell me-2"></i>Today's Workouts</h5>
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addWorkoutModal">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="workoutList">
+                        <p class="text-muted text-center">No workouts logged today</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Today's Foods Card -->
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-utensils me-2"></i>Today's Foods</h5>
+                    <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addFoodModal">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+                <div class="card-body">
+                    <div id="foodList">
+                        <p class="text-muted text-center">No foods logged today</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Summary Section -->
+    <div class="row">
+        <!-- Left Column -->
+        <div class="col-md-8">
+            <!-- Daily Summary Card -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-chart-pie me-2"></i>Daily Summary</h5>
+                    <small class="text-muted">Today</small>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6><i class="fas fa-utensils me-2"></i>Calories Consumed</h6>
+                                <h3 id="caloriesConsumed">0</h3>
+                                <div class="progress">
+                                    <div id="caloriesConsumedBar" class="progress-bar bg-primary" role="progressbar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6><i class="fas fa-fire me-2"></i>Calories Burned</h6>
+                                <h3 id="caloriesBurned">0</h3>
+                                <div class="progress">
+                                    <div id="caloriesBurnedBar" class="progress-bar bg-danger" role="progressbar"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6><i class="fas fa-balance-scale me-2"></i>Net Calories</h6>
+                                <h3 id="netCalories">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weekly Progress Card -->
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Weekly Progress</h5>
+                    <small class="text-muted">Last 7 Days</small>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6>Weekly Average</h6>
+                                <h3 id="weeklyAvgCalories">0</h3>
+                                <small class="text-muted">calories per day</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6>Avg. Consumed</h6>
+                                <h3 id="avgCaloriesConsumed">0</h3>
+                                <small class="text-muted">calories per day</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-card">
+                                <h6>Avg. Burned</h6>
+                                <h3 id="avgCaloriesBurned">0</h3>
+                                <small class="text-muted">calories per day</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="weeklyChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="col-md-4">
+            <!-- Add any additional widgets here -->
+        </div>
+    </div>
+
+    <!-- Alert Container -->
+    <div id="alertContainer" class="position-fixed top-0 start-50 translate-middle-x" style="z-index: 1050; margin-top: 1rem;"></div>
+</div>
+
+<!-- Add Workout Modal -->
+<div class="modal fade" id="addWorkoutModal" tabindex="-1" aria-labelledby="addWorkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addWorkoutModalLabel">Add Workout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="workoutForm">
+                    <div class="mb-3">
+                        <label for="workoutType" class="form-label">Workout Type</label>
+                        <select class="form-control" id="workoutType" name="type" required>
+                            <option value="">Select a workout type</option>
+                            <option value="Running">Running</option>
+                            <option value="Cycling">Cycling</option>
+                            <option value="Swimming">Swimming</option>
+                            <option value="Yoga">Yoga</option>
+                            <option value="Weightlifting">Weightlifting</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="duration" class="form-label">Duration (minutes)</label>
+                        <input type="number" class="form-control" id="duration" name="duration" required min="1">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Food Modal -->
+<div class="modal fade" id="addFoodModal" tabindex="-1" aria-labelledby="addFoodModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFoodModalLabel">Add Food</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="foodForm">
+                    <div class="mb-3">
+                        <label for="foodDescription" class="form-label">Food Description</label>
+                        <input type="text" class="form-control" id="foodDescription" name="food_description" required placeholder="e.g., Apple, Banana, etc.">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Workout Modal -->
+<div class="modal fade" id="editWorkoutModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-dumbbell me-2"></i>Edit Workout</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editWorkoutForm">
+                    <input type="hidden" id="editWorkoutId">
+                    <div class="mb-3">
+                        <label class="form-label">Type of Workout</label>
+                        <select class="form-select" id="editWorkoutType" required>
+                            <option value="">Select a workout type</option>
+                            <option value="Running">Running</option>
+                            <option value="Cycling">Cycling</option>
+                            <option value="Swimming">Swimming</option>
+                            <option value="Walking">Walking</option>
+                            <option value="Weightlifting">Weightlifting</option>
+                            <option value="Yoga">Yoga</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Duration (minutes)</label>
+                        <input type="number" class="form-control" id="editDuration" required min="1">
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-danger" onclick="deleteWorkout()">Delete</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Food Modal -->
+<div class="modal fade" id="editFoodModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-utensils me-2"></i>Edit Food</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editFoodForm">
+                    <input type="hidden" id="editFoodId">
+                    <div class="mb-3">
+                        <label class="form-label">Food Description</label>
+                        <input type="text" class="form-control" id="editFoodDescription" required>
+                        <small class="text-muted">Example: "2 eggs", "1 apple", "chicken breast"</small>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-danger" onclick="deleteFood()">Delete</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Info Modal -->
+<div class="modal fade" id="userInfoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-user-edit me-2"></i>Update Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="userInfoForm">
+                    <div class="mb-3">
+                        <label class="form-label">Daily Calories Target</label>
+                        <input type="number" class="form-control" id="dailyCaloriesTarget" required min="1000" max="10000">
+                        <small class="text-muted">Recommended: 2000-2500 calories for adults</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Current Weight (kg)</label>
+                        <input type="number" class="form-control" id="currentWeight" required min="20" max="300" step="0.1">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Target Weight (kg)</label>
+                        <input type="number" class="form-control" id="targetWeight" required min="20" max="300" step="0.1">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+{% endblock %}
